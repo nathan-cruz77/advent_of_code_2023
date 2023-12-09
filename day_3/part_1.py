@@ -70,14 +70,19 @@ def group_numbers(schematic):
             part_numbers.append(current_part_number)
             current_part_number = None
 
+    if current_part_number is not None:
+        current_part_number.close()
+        part_numbers.append(current_part_number)
+
     return part_numbers
 
 
-with open('input.txt') as f:
+with open('part-1.txt') as f:
     schematic = read_schematic(f)
     total = 0
 
     for part_number in group_numbers(schematic):
+        print(f'{part_number} - {part_number.is_valid(schematic)}')
         if part_number.is_valid(schematic):
             total += part_number.int_value
 
