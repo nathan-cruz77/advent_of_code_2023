@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from dataclasses import field
+import bisect
 
 
 @dataclass
@@ -50,7 +51,7 @@ fallen_bricks = []
 
 for brick in bricks:
     z_size = brick.maxs[2] - brick.mins[2]
-    first_colling_brick = next((b for b in fallen_bricks if b.collides(brick)), None)
+    first_colling_brick = next((b for b in reversed(fallen_bricks) if b.collides(brick)), None)
 
     if first_colling_brick is None:
         brick.mins[2] = 1
@@ -66,9 +67,7 @@ for brick in bricks:
 
     brick.maxs[2] = brick.mins[2] + z_size
 
-    fallen_bricks.append(brick)
-
-    fallen_bricks.sort(reverse=True, key=lambda b: b.maxs[2])
+    bisect.insort(fallen_bricks, brick, key=lambda b: b.maxs[2])
 
 total = 0
 
