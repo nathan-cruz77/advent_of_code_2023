@@ -41,6 +41,9 @@ class Node:
     def neighbors(self):
         return {self._neighbor(direction) for direction in self.directions if self._neighbor(direction) is not None}
 
+    def __eq__(self, other):
+        return self.coords == other.coords
+
     def __lt__(self, other):
         return self.distance < other.distance
 
