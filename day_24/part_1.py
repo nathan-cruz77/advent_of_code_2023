@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from itertools import combinations
+from fractions import Fraction
 
 LIMIT_MIN=200_000_000_000_000
 LIMIT_MAX=400_000_000_000_000
@@ -14,10 +15,13 @@ class Hailstone:
         speed_x, speed_y, _ = self.speed
         pos_x, pos_y, _ = self.initial_position
 
-        self.b = (speed_y + pos_y - ((speed_x + pos_x) * pos_y / pos_x)) / (1 - ((speed_x + pos_x) / pos_x))
+        self.b = (speed_y + pos_y - Fraction((speed_x + pos_x) * pos_y, pos_x)) / (1 - Fraction(speed_x + pos_x, pos_x))
         self.a = (pos_y - self.b) / pos_x
 
     def crosses(self, other):
+        if self.a - other.a == 0:
+            return False
+
         crossing_x = (other.b - self.b) / (self.a - other.a)
         crossing_y = (self.a * crossing_x) + self.b
 
