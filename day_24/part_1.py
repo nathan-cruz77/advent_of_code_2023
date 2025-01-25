@@ -15,7 +15,7 @@ class Hailstone:
         speed_x, speed_y, _ = self.speed
         pos_x, pos_y, _ = self.initial_position
 
-        self.b = (speed_y + pos_y - Fraction((speed_x + pos_x) * pos_y, pos_x)) / (1 - Fraction(speed_x + pos_x, pos_x))
+        self.b = (speed_y + pos_y - ((speed_x + pos_x) * pos_y) / pos_x) / (1 - (speed_x + pos_x) / pos_x)
         self.a = (pos_y - self.b) / pos_x
 
     def crosses(self, other):
@@ -47,8 +47,8 @@ hailstones = []
 for line in data:
     position, speed = line.strip().split('@')
 
-    position = [int(p) for p in position.split(', ')]
-    speed = [int(s) for s in speed.split(', ')]
+    position = [Fraction(p) for p in position.split(', ')]
+    speed = [Fraction(s) for s in speed.split(', ')]
 
     hailstones.append(
         Hailstone(
